@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>KYLA | Command Deck</title>
+<style>
+:root{--bg:#09090D;--panel:#14141B;--panel2:#1A1922;--line:#302B39;--gold:#D6B56D;--violet:#9B7BCE;--danger:#FF5E72;--success:#79D6A3;--text:#F2EEF5;--muted:#96909F;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--text);background:radial-gradient(ellipse at 82% 0%,rgba(111,74,157,.15),transparent 34rem),radial-gradient(ellipse at 0% 36%,rgba(214,181,109,.07),transparent 28rem),var(--bg);font-family:var(--sans)}
+.shell{width:min(1500px,100%);margin:0 auto;padding:25px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:14px}
+.sigil{width:48px;height:48px;position:relative;display:grid;place-items:center;border:1px solid var(--gold);border-radius:50%;color:var(--gold);font:700 20px var(--mono);box-shadow:0 0 25px rgba(214,181,109,.12),inset 0 0 15px rgba(214,181,109,.08)}
+.sigil:before,.sigil:after{content:"";position:absolute;border:1px solid rgba(155,123,206,.65);border-radius:50%;inset:-5px 8px}
+.sigil:after{inset:8px -5px}
+.brand h1{margin:0;font-size:16px;letter-spacing:.22em}
+.brand p{margin:5px 0 0;color:var(--muted);font:10px var(--mono);letter-spacing:.13em}
+.top-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pill,.refresh{border:1px solid var(--line);border-radius:999px;padding:9px 12px;color:var(--gold);background:rgba(20,20,27,.82);font:10px var(--mono);letter-spacing:.08em}
+.pill:before{content:"";display:inline-block;width:7px;height:7px;margin-right:8px;border-radius:50%;background:var(--success);box-shadow:0 0 10px var(--success)}
+.pill.offline{color:var(--danger)}
+.pill.offline:before{background:var(--danger);box-shadow:0 0 10px var(--danger)}
+.refresh{cursor:pointer;color:var(--text)}
+.refresh:hover{border-color:var(--gold);color:var(--gold)}
+.hero{display:flex;align-items:end;justify-content:space-between;gap:20px;padding:27px 0 21px}
+.eyebrow{color:var(--violet);font:10px var(--mono);letter-spacing:.2em;text-transform:uppercase}
+.hero h2{margin:7px 0 5px;font-size:clamp(24px,4vw,38px);letter-spacing:-.04em}
+.hero p{margin:0;max-width:720px;color:var(--muted);line-height:1.55}
+.hero-note{color:var(--gold);font:11px var(--mono);text-align:right}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.panel{min-width:0;padding:17px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(145deg,rgba(26,25,34,.96),rgba(16,16,22,.96));box-shadow:0 12px 35px rgba(0,0,0,.18)}
+.span12{grid-column:span 12}.span8{grid-column:span 8}.span7{grid-column:span 7}.span6{grid-column:span 6}.span5{grid-column:span 5}.span4{grid-column:span 4}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:13px}
+.panel h3{margin:0;font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+.kicker{color:var(--muted);font:9px var(--mono);letter-spacing:.1em}
+.subtle{color:var(--muted);font-size:12px;line-height:1.5}.mono{font-family:var(--mono)}
+.router{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-items:stretch}
+.route-card{position:relative;padding:14px;min-height:82px;border:1px solid var(--line);border-radius:10px;background:rgba(9,9,13,.45)}
+.route-card:not(:last-child):after{content:"->";position:absolute;z-index:2;right:-17px;top:29px;color:var(--gold);font:12px var(--mono)}
+.route-card .tier{color:var(--violet);font:9px var(--mono);letter-spacing:.12em}
+.route-card strong{display:block;margin:7px 0 4px;font-size:13px}
+.route-card span:last-child{color:var(--muted);font-size:11px;line-height:1.4}
+.frameworks{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.tag{padding:6px 9px;border:1px solid var(--line);border-radius:999px;color:#D4CBE1;background:rgba(155,123,206,.06);font:9px var(--mono)}
+.agent-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.agent-card{padding:10px;border:1px solid var(--line);border-radius:9px;background:rgba(9,9,13,.42);transition:.2s ease}
+.agent-card strong{display:block;font-size:11px;line-height:1.35;overflow-wrap:anywhere}
+.agent-meta{margin-top:7px;display:flex;justify-content:space-between;gap:4px;color:var(--muted);font:8px var(--mono)}
+.state-REPORT{border-color:rgba(214,181,109,.78);box-shadow:0 0 16px rgba(214,181,109,.12)}
+.state-REPORT .status{color:var(--gold)}
+.state-ACTIVE{border-color:rgba(155,123,206,.62);box-shadow:0 0 14px rgba(155,123,206,.12)}
+.state-ACTIVE .status{color:var(--violet)}.state-IDLE .status{color:var(--muted)}
+.sandbox-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.sandbox-card{padding:12px;border:1px solid var(--line);border-radius:10px;background:rgba(9,9,13,.42)}
+.sandbox-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.sandbox-top strong{color:var(--gold);font:12px var(--mono)}
+.codename{margin-top:8px;color:var(--violet);font-size:11px}
+.role{margin-top:5px;color:var(--muted);font-size:10px;line-height:1.45}
+.router-flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px;padding:12px;border:1px solid var(--line);border-radius:10px;background:rgba(9,9,13,.45)}
+.stage{padding:8px 10px;border:1px solid var(--line);border-radius:7px;color:#D9D2E0;font:9px var(--mono);letter-spacing:.03em}
+.stage.gate{color:var(--gold);border-color:rgba(214,181,109,.65)}.stage.locked{color:var(--danger);border-color:rgba(255,94,114,.48)}
+.flow-arrow{color:var(--violet);font:12px var(--mono)}
+.gate-checks{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:11px}
+.check{padding:9px;border:1px solid rgba(255,94,114,.35);border-radius:8px;color:var(--danger);background:rgba(255,94,114,.045);font:9px var(--mono)}
+.gate-status{margin-top:10px;color:var(--danger);font:10px var(--mono);letter-spacing:.08em}
+.quant-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.metric{padding:11px;border:1px solid var(--line);border-radius:9px;background:rgba(9,9,13,.38)}
+.metric-label{color:var(--muted);font:8px var(--mono);text-transform:uppercase;letter-spacing:.1em}
+.metric-value{margin-top:6px;color:var(--gold);font:17px var(--mono)}
+.tf-row,.sequence-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+.tf,.sequence{padding:6px 8px;border:1px solid var(--line);border-radius:6px;color:#DAD4E2;background:rgba(155,123,206,.07);font:9px var(--mono)}
+.mt5{margin-top:12px;padding:11px;border-left:2px solid var(--violet);background:rgba(155,123,206,.055)}
+.ticker{margin-top:12px;padding:11px;border:1px solid rgba(214,181,109,.35);border-radius:8px;color:var(--gold);background:rgba(214,181,109,.045);font:10px var(--mono);line-height:1.5}
+.workflow-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.workflow{padding:11px;border:1px solid var(--line);border-radius:9px;background:rgba(9,9,13,.4)}
+.workflow.active{border-color:rgba(155,123,206,.7);box-shadow:0 0 14px rgba(155,123,206,.12)}
+.workflow-title{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.workflow-title strong{color:var(--gold);font-size:11px}.workflow-title span{color:var(--violet);font:8px var(--mono)}
+.workflow p{margin:7px 0 0;color:var(--muted);font-size:10px;line-height:1.45}.workflow .pair{color:#DED6E8}
+.board{display:grid;gap:8px}
+.issue{display:flex;align-items:flex-start;gap:10px;padding:10px;border:1px solid var(--line);border-radius:8px;background:rgba(9,9,13,.4);color:var(--muted);font-size:11px;line-height:1.45}
+.priority{flex:0 0 auto;min-width:32px;padding:4px 5px;border-radius:5px;text-align:center;font:9px var(--mono)}
+.priority.P0{color:var(--danger);background:rgba(255,94,114,.12)}.priority.P1{color:var(--gold);background:rgba(214,181,109,.12)}.priority.P2{color:var(--violet);background:rgba(155,123,206,.12)}
+.progress-track{width:100%;height:10px;margin:11px 0 8px;overflow:hidden;border:1px solid var(--line);border-radius:999px;background:#0A0A0F}
+.progress-fill{width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--violet),var(--gold));box-shadow:0 0 14px rgba(214,181,109,.28);transition:width .35s ease}
+.farm-meta{display:flex;justify-content:space-between;gap:8px;color:var(--gold);font:10px var(--mono)}
+.hardware-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.hw-item{padding:10px;border:1px solid var(--line);border-radius:8px;background:rgba(9,9,13,.4)}
+.hw-item .metric-label{display:block}.hw-item strong{display:block;margin-top:6px;color:var(--gold);font:11px var(--mono);overflow-wrap:anywhere}
+.hw-note{margin-top:10px;color:var(--violet);font:9px var(--mono);line-height:1.5}
+.list-chips{display:flex;flex-wrap:wrap;gap:7px}.goal-list{display:grid;gap:8px}
+.goal{padding:9px 10px;border-left:2px solid var(--gold);background:rgba(214,181,109,.045);color:#D9D3DF;font-size:11px;line-height:1.45}
+.footer{display:flex;justify-content:space-between;gap:12px;padding:18px 2px 4px;color:var(--muted);font:9px var(--mono)}
+@media(max-width:950px){.span8,.span7,.span6,.span5,.span4{grid-column:span 12}.agent-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:620px){.shell{padding:15px}.topbar,.hero{align-items:flex-start;flex-direction:column}.hero-note{text-align:left}.router{grid-template-columns:1fr}.route-card:not(:last-child):after{content:"v";right:12px;top:auto;bottom:-13px}.agent-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sandbox-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.workflow-list{grid-template-columns:1fr}.quant-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.gate-checks{grid-template-columns:repeat(2,1fr)}.hardware-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.footer{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="topbar">
+  <div class="brand"><div class="sigil" aria-hidden="true">K</div><div><h1>KYLA</h1><p>LOCAL COMMAND DECK / PRIVATE BY DESIGN</p></div></div>
+  <div class="top-right"><span id="connection" class="pill" role="status">LOCAL LINK</span><button id="refresh" class="refresh" type="button">REFRESH</button></div>
+</header>
+<section class="hero"><div><div class="eyebrow">The pattern is showing</div><h2>Good evening, Mel.</h2><p>Your command center is here. Read the signal, protect the downside, and make the next move count.</p></div><div class="hero-note">LOCAL HUD / SIMULATED AGENT ACTIVITY</div></section>
+<main class="grid">
+<section class="panel span12"><div class="panel-head"><h3>JEV-style request router</h3><span class="kicker">ROUTE BY COMPLEXITY</span></div><div id="router" class="router"></div><div id="frameworks" class="frameworks"></div></section>
+<section class="panel span8"><div class="panel-head"><h3>Agent roster</h3><span class="kicker">15 CREW + 7 SANDBOX</span></div><div id="agents" class="agent-grid"></div></section>
+<section class="panel span4"><div class="panel-head"><h3>R13 release gate</h3><span class="kicker">APPROVAL PATH</span></div><div class="subtle">Nothing proceeds to SOPHIA or Mel approval until every review passes.</div><div class="router-flow" aria-label="Release flow"><span class="stage">WORK COMPLETE</span><span class="flow-arrow">-&gt;</span><span class="stage gate">R13 REVIEW</span><span class="flow-arrow">-&gt;</span><span class="stage locked">SOPHIA LOCKED</span><span class="flow-arrow">-&gt;</span><span class="stage locked">MEL APPROVAL</span></div><div id="gateChecks" class="gate-checks"></div><div id="gateStatus" class="gate-status">LOCKED</div></section>
+<section class="panel span12"><div class="panel-head"><h3>Docker sandbox agents</h3><span class="kicker">ISOLATED TOOLS / CPU-THROTTLED</span></div><div id="sandbox" class="sandbox-grid"></div></section>
+<section class="panel span7"><div class="panel-head"><h3>Quant mind</h3><span class="kicker">TARGETS, NOT CLAIMED RESULTS</span></div><div id="quantMetrics" class="quant-grid"></div><div class="subtle" style="margin-top:12px">Sequence setups</div><div id="sequences" class="sequence-row"></div><div class="subtle" style="margin-top:12px">Multi-timeframe watch</div><div id="timeframes" class="tf-row"></div><div id="mt5" class="mt5 subtle"></div><div id="signal" class="ticker" role="status"></div></section>
+<section class="panel span5"><div class="panel-head"><h3>Loophole board</h3><span class="kicker">WEEKLY SWEEP / docs/LOOPHOLES.md</span></div><div id="loopholes" class="board"></div></section>
+<section class="panel span6"><div class="panel-head"><h3>Vice / virtue workflow map</h3><span class="kicker">7 DAILY DISCIPLINE MIRRORS</span></div><div id="workflows" class="workflow-list"></div></section>
+<section class="panel span6"><div class="panel-head"><h3>Moji Moji video farm</h3><span class="kicker">3 REFS -&gt; TIERED -&gt; 20 VIDEOS</span></div><div id="farmName" class="subtle">Farm queue loading</div><div class="progress-track" aria-label="Farm queue progress"><div id="farmProgress" class="progress-fill"></div></div><div class="farm-meta"><span id="farmCount">0 / 20</span><span id="farmStatus">WAITING</span></div><p id="farmInput" class="subtle"></p></section>
+<section class="panel span5"><div class="panel-head"><h3>Hardware whisper</h3><span class="kicker">LOCAL HOST READOUT</span></div><div id="hardware" class="hardware-grid"></div><div id="hardwareNote" class="hw-note"></div></section>
+<section class="panel span7"><div class="panel-head"><h3>Feeds and publishing arms</h3><span class="kicker">DESIGN REFERENCES / NOT CONNECTED</span></div><div class="subtle">Information feeds</div><div id="sources" class="list-chips" style="margin:8px 0 15px"></div><div class="subtle">Digital product publishing</div><div id="publishing" class="list-chips" style="margin-top:8px"></div></section>
+<section class="panel span12"><div class="panel-head"><h3>Mel's north star</h3><span class="kicker">GOALS, NOT COMPLETED ACHIEVEMENTS</span></div><div id="goals" class="goal-list"></div></section>
+</main>
+<footer class="footer"><span>KYLA / LOCAL-ONLY HUD / OFFLINE ASSETS</span><span id="updated">Waiting for local state...</span></footer>
+</div>
+<script>
+"use strict";
+function make(tag,className,text){var node=document.createElement(tag);if(className)node.className=className;if(text!==undefined&&text!==null)node.textContent=String(text);return node}
+function clear(node){while(node.firstChild)node.removeChild(node.firstChild)}
+function chipList(targetId,values){var target=document.getElementById(targetId);clear(target);(values||[]).forEach(function(value){target.appendChild(make("span","tag",value))})}
+function renderRouter(data){var root=document.getElementById("router");clear(root);(data.router||[]).forEach(function(item,index){var card=make("div","route-card");card.appendChild(make("span","tier",item.name||("TIER "+(index+1))));card.appendChild(make("strong","",item.title||""));card.appendChild(make("span","",item.detail||""));root.appendChild(card)});chipList("frameworks",data.frameworks)}
+function renderAgents(data){var root=document.getElementById("agents");clear(root);(data.agents||[]).forEach(function(agent){var card=make("div","agent-card state-"+(agent.status||"IDLE"));card.appendChild(make("strong","",agent.name||"Agent"));var meta=make("div","agent-meta");meta.appendChild(make("span","",agent.group||"CREW"));meta.appendChild(make("span","status",agent.status||"IDLE"));card.appendChild(meta);root.appendChild(card)})}
+function renderSandbox(data){var root=document.getElementById("sandbox");clear(root);(data.sandbox||[]).forEach(function(agent){var card=make("div","sandbox-card");var top=make("div","sandbox-top");top.appendChild(make("strong","",agent.name||""));top.appendChild(make("span","kicker",agent.status||"IDLE"));card.appendChild(top);card.appendChild(make("div","codename",agent.codename||""));card.appendChild(make("div","role",agent.role||""));root.appendChild(card)})}
+function renderGate(data){var gate=data.gate||{};var root=document.getElementById("gateChecks");clear(root);(gate.checks||[]).forEach(function(item){root.appendChild(make("div","check","LOCKED / "+item))});document.getElementById("gateStatus").textContent=gate.status||"LOCKED - reviews required"}
+function renderQuant(data){var quant=data.quant||{};var metrics=document.getElementById("quantMetrics");clear(metrics);[["STRATEGY LIBRARY TARGET",quant.strategy_target],["POSITIVE BACKTEST GOAL",quant.positive_backtest_goal],["RISK CYCLE",quant.risk_cycle],["SCALP LIMIT",quant.scalp_limit]].forEach(function(pair){var item=make("div","metric");item.appendChild(make("div","metric-label",pair[0]));item.appendChild(make("div","metric-value",pair[1]===undefined?"--":pair[1]));metrics.appendChild(item)});chipList("sequences",quant.sequence_setups);chipList("timeframes",quant.timeframes);document.getElementById("mt5").textContent="MT5 INDICATOR SCOPE: "+(quant.mt5_scope||"Not configured");document.getElementById("signal").textContent="SIGNAL TICKER / "+(data.signal||"No simulated signal")+" / "+(quant.notice||"Demo data only.")}
+function renderLoopholes(data){var root=document.getElementById("loopholes");clear(root);(data.loopholes||[]).forEach(function(item){var row=make("div","issue");row.appendChild(make("span","priority "+(item.priority||"P2"),item.priority||"P2"));row.appendChild(make("span","",item.text||""));root.appendChild(row)})}
+function renderWorkflows(data){var root=document.getElementById("workflows");clear(root);(data.workflows||[]).forEach(function(item){var card=make("div","workflow"+(item.active?" active":""));var title=make("div","workflow-title");title.appendChild(make("strong","",item.name||"Workflow"));title.appendChild(make("span","",item.active?"ACTIVE":"STANDBY"));card.appendChild(title);card.appendChild(make("p","pair",(item.vice||"")+" / "+(item.virtue||"")));card.appendChild(make("p","",(item.vice_job||"")+" "+(item.virtue_job||"")));root.appendChild(card)})}
+function renderFarm(data){var farm=data.farm||{};var progress=Math.max(0,Math.min(100,Number(farm.progress)||0));document.getElementById("farmName").textContent=farm.name||"Video farm";document.getElementById("farmProgress").style.width=progress+"%";document.getElementById("farmCount").textContent=(farm.done===undefined?0:farm.done)+" / "+(farm.total===undefined?20:farm.total)+" VIDEOS";document.getElementById("farmStatus").textContent=farm.status||"UNKNOWN";document.getElementById("farmInput").textContent=farm.input||""}
+function renderHardware(data){var hardware=data.hardware||{};var root=document.getElementById("hardware");clear(root);[["TARGET",hardware.target],["DETECTED OS",hardware.detected_os],["CPU",hardware.cpu],["LOGICAL CORES",hardware.logical_cores],["LOAD AVERAGE / 1M",hardware.load_1m],["RAM GB",hardware.ram_gb]].forEach(function(pair){var item=make("div","hw-item");item.appendChild(make("span","metric-label",pair[0]));item.appendChild(make("strong","",pair[1]===null||pair[1]===undefined?"n/a":pair[1]));root.appendChild(item)});document.getElementById("hardwareNote").textContent=hardware.agent_note||"Agent workload is CPU-throttled."}
+function renderGoals(data){var root=document.getElementById("goals");clear(root);(data.life_goals||[]).forEach(function(goal){root.appendChild(make("div","goal",goal))})}
+function setConnection(online){var badge=document.getElementById("connection");badge.textContent=online?"LOCAL LINK / LIVE":"LOCAL LINK / RETRYING";badge.className=online?"pill":"pill offline"}
+function update(){fetch("/api/state",{cache:"no-store",credentials:"same-origin"}).then(function(response){if(!response.ok)throw new Error("Local state unavailable");return response.json()}).then(function(data){renderRouter(data);renderAgents(data);renderSandbox(data);renderGate(data);renderQuant(data);renderLoopholes(data);renderWorkflows(data);renderFarm(data);renderHardware(data);chipList("sources",data.sources);chipList("publishing",data.publishing);renderGoals(data);setConnection(true);document.getElementById("updated").textContent="LOCAL STATE UPDATED / "+new Date().toLocaleTimeString()}).catch(function(){setConnection(false);document.getElementById("updated").textContent="Waiting for local server state..."})}
+document.getElementById("refresh").addEventListener("click",update);update();window.setInterval(update,4000);
+</script>
+</body>
+</html>
