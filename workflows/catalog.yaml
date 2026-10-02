@@ -1,0 +1,57 @@
+workflows:
+  - name: "Pride-Icarus"
+    category: vice
+    function: "Pride-Icarus Mirror KPI scorecard"
+    status: stub
+  - name: "Greed-Midas"
+    category: vice
+    function: "Greed-Midas Ledger market watchlist+paper signals"
+    status: stub
+  - name: "Lust-Siren"
+    category: vice
+    function: "Lust-Siren's Hook content hooks"
+    status: stub
+  - name: "Envy-Rival"
+    category: vice
+    function: "Envy-Rival's Grimoire competitor research"
+    status: stub
+  - name: "Gluttony-Data Maw"
+    category: vice
+    function: "Gluttony-Data Maw data collection+dedupe"
+    status: stub
+  - name: "Wrath-Red Bell"
+    category: vice
+    function: "Wrath-Red Bell alerts+pause switch"
+    status: stub
+  - name: "Sloth-Somnus"
+    category: vice
+    function: "Sloth-Somnus reminders+admin queue"
+    status: stub
+  - name: "Humility-The Auditor"
+    category: virtue
+    function: "Humility-The Auditor trading journal+error tracking"
+    status: stub
+  - name: "Charity-Open Hand"
+    category: virtue
+    function: "Charity-Open Hand digital products $5-50"
+    status: stub
+  - name: "Chastity-The Veil"
+    category: virtue
+    function: "Chastity-The Veil secrets+permissions"
+    status: stub
+  - name: "Kindness-The Lantern"
+    category: virtue
+    function: "Kindness-The Lantern client onboarding+updates"
+    status: stub
+  - name: "Temperance-The Scales"
+    category: virtue
+    function: "Temperance-The Scales risk/exposure limits"
+    status: stub
+  - name: "Patience-The Hourglass"
+    category: virtue
+    function: "Patience-The Hourglass backtests before live"
+    status: stub
+  - name: "Diligence-The Anvil"
+    category: virtue
+    function: "Diligence-The Anvil site delivery tracker 3/week at KSh 9,000"
+    status: stub
