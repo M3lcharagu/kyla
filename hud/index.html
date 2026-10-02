@@ -1,142 +1,286 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="dark">
-<title>KYLA | Command Deck</title>
-<style>
-:root{--bg:#09090D;--panel:#14141B;--panel2:#1A1922;--line:#302B39;--gold:#D6B56D;--violet:#9B7BCE;--danger:#FF5E72;--success:#79D6A3;--text:#F2EEF5;--muted:#96909F;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-*{box-sizing:border-box}
-body{margin:0;min-height:100vh;color:var(--text);background:radial-gradient(ellipse at 82% 0%,rgba(111,74,157,.15),transparent 34rem),radial-gradient(ellipse at 0% 36%,rgba(214,181,109,.07),transparent 28rem),var(--bg);font-family:var(--sans)}
-.shell{width:min(1500px,100%);margin:0 auto;padding:25px}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-bottom:22px;border-bottom:1px solid var(--line)}
-.brand{display:flex;align-items:center;gap:14px}
-.sigil{width:48px;height:48px;position:relative;display:grid;place-items:center;border:1px solid var(--gold);border-radius:50%;color:var(--gold);font:700 20px var(--mono);box-shadow:0 0 25px rgba(214,181,109,.12),inset 0 0 15px rgba(214,181,109,.08)}
-.sigil:before,.sigil:after{content:"";position:absolute;border:1px solid rgba(155,123,206,.65);border-radius:50%;inset:-5px 8px}
-.sigil:after{inset:8px -5px}
-.brand h1{margin:0;font-size:16px;letter-spacing:.22em}
-.brand p{margin:5px 0 0;color:var(--muted);font:10px var(--mono);letter-spacing:.13em}
-.top-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.pill,.refresh{border:1px solid var(--line);border-radius:999px;padding:9px 12px;color:var(--gold);background:rgba(20,20,27,.82);font:10px var(--mono);letter-spacing:.08em}
-.pill:before{content:"";display:inline-block;width:7px;height:7px;margin-right:8px;border-radius:50%;background:var(--success);box-shadow:0 0 10px var(--success)}
-.pill.offline{color:var(--danger)}
-.pill.offline:before{background:var(--danger);box-shadow:0 0 10px var(--danger)}
-.refresh{cursor:pointer;color:var(--text)}
-.refresh:hover{border-color:var(--gold);color:var(--gold)}
-.hero{display:flex;align-items:end;justify-content:space-between;gap:20px;padding:27px 0 21px}
-.eyebrow{color:var(--violet);font:10px var(--mono);letter-spacing:.2em;text-transform:uppercase}
-.hero h2{margin:7px 0 5px;font-size:clamp(24px,4vw,38px);letter-spacing:-.04em}
-.hero p{margin:0;max-width:720px;color:var(--muted);line-height:1.55}
-.hero-note{color:var(--gold);font:11px var(--mono);text-align:right}
-.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
-.panel{min-width:0;padding:17px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(145deg,rgba(26,25,34,.96),rgba(16,16,22,.96));box-shadow:0 12px 35px rgba(0,0,0,.18)}
-.span12{grid-column:span 12}.span8{grid-column:span 8}.span7{grid-column:span 7}.span6{grid-column:span 6}.span5{grid-column:span 5}.span4{grid-column:span 4}
-.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:13px}
-.panel h3{margin:0;font-size:12px;letter-spacing:.16em;text-transform:uppercase}
-.kicker{color:var(--muted);font:9px var(--mono);letter-spacing:.1em}
-.subtle{color:var(--muted);font-size:12px;line-height:1.5}.mono{font-family:var(--mono)}
-.router{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-items:stretch}
-.route-card{position:relative;padding:14px;min-height:82px;border:1px solid var(--line);border-radius:10px;background:rgba(9,9,13,.45)}
-.route-card:not(:last-child):after{content:"->";position:absolute;z-index:2;right:-17px;top:29px;color:var(--gold);font:12px var(--mono)}
-.route-card .tier{color:var(--violet);font:9px var(--mono);letter-spacing:.12em}
-.route-card strong{display:block;margin:7px 0 4px;font-size:13px}
-.route-card span:last-child{color:var(--muted);font-size:11px;line-height:1.4}
-.frameworks{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
-.tag{padding:6px 9px;border:1px solid var(--line);border-radius:999px;color:#D4CBE1;background:rgba(155,123,206,.06);font:9px var(--mono)}
-.agent-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
-.agent-card{padding:10px;border:1px solid var(--line);border-radius:9px;background:rgba(9,9,13,.42);transition:.2s ease}
-.agent-card strong{display:block;font-size:11px;line-height:1.35;overflow-wrap:anywhere}
-.agent-meta{margin-top:7px;display:flex;justify-content:space-between;gap:4px;color:var(--muted);font:8px var(--mono)}
-.state-REPORT{border-color:rgba(214,181,109,.78);box-shadow:0 0 16px rgba(214,181,109,.12)}
-.state-REPORT .status{color:var(--gold)}
-.state-ACTIVE{border-color:rgba(155,123,206,.62);box-shadow:0 0 14px rgba(155,123,206,.12)}
-.state-ACTIVE .status{color:var(--violet)}.state-IDLE .status{color:var(--muted)}
-.sandbox-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
-.sandbox-card{padding:12px;border:1px solid var(--line);border-radius:10px;background:rgba(9,9,13,.42)}
-.sandbox-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.sandbox-top strong{color:var(--gold);font:12px var(--mono)}
-.codename{margin-top:8px;color:var(--violet);font-size:11px}
-.role{margin-top:5px;color:var(--muted);font-size:10px;line-height:1.45}
-.router-flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px;padding:12px;border:1px solid var(--line);border-radius:10px;background:rgba(9,9,13,.45)}
-.stage{padding:8px 10px;border:1px solid var(--line);border-radius:7px;color:#D9D2E0;font:9px var(--mono);letter-spacing:.03em}
-.stage.gate{color:var(--gold);border-color:rgba(214,181,109,.65)}.stage.locked{color:var(--danger);border-color:rgba(255,94,114,.48)}
-.flow-arrow{color:var(--violet);font:12px var(--mono)}
-.gate-checks{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:11px}
-.check{padding:9px;border:1px solid rgba(255,94,114,.35);border-radius:8px;color:var(--danger);background:rgba(255,94,114,.045);font:9px var(--mono)}
-.gate-status{margin-top:10px;color:var(--danger);font:10px var(--mono);letter-spacing:.08em}
-.quant-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-.metric{padding:11px;border:1px solid var(--line);border-radius:9px;background:rgba(9,9,13,.38)}
-.metric-label{color:var(--muted);font:8px var(--mono);text-transform:uppercase;letter-spacing:.1em}
-.metric-value{margin-top:6px;color:var(--gold);font:17px var(--mono)}
-.tf-row,.sequence-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
-.tf,.sequence{padding:6px 8px;border:1px solid var(--line);border-radius:6px;color:#DAD4E2;background:rgba(155,123,206,.07);font:9px var(--mono)}
-.mt5{margin-top:12px;padding:11px;border-left:2px solid var(--violet);background:rgba(155,123,206,.055)}
-.ticker{margin-top:12px;padding:11px;border:1px solid rgba(214,181,109,.35);border-radius:8px;color:var(--gold);background:rgba(214,181,109,.045);font:10px var(--mono);line-height:1.5}
-.workflow-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.workflow{padding:11px;border:1px solid var(--line);border-radius:9px;background:rgba(9,9,13,.4)}
-.workflow.active{border-color:rgba(155,123,206,.7);box-shadow:0 0 14px rgba(155,123,206,.12)}
-.workflow-title{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
-.workflow-title strong{color:var(--gold);font-size:11px}.workflow-title span{color:var(--violet);font:8px var(--mono)}
-.workflow p{margin:7px 0 0;color:var(--muted);font-size:10px;line-height:1.45}.workflow .pair{color:#DED6E8}
-.board{display:grid;gap:8px}
-.issue{display:flex;align-items:flex-start;gap:10px;padding:10px;border:1px solid var(--line);border-radius:8px;background:rgba(9,9,13,.4);color:var(--muted);font-size:11px;line-height:1.45}
-.priority{flex:0 0 auto;min-width:32px;padding:4px 5px;border-radius:5px;text-align:center;font:9px var(--mono)}
-.priority.P0{color:var(--danger);background:rgba(255,94,114,.12)}.priority.P1{color:var(--gold);background:rgba(214,181,109,.12)}.priority.P2{color:var(--violet);background:rgba(155,123,206,.12)}
-.progress-track{width:100%;height:10px;margin:11px 0 8px;overflow:hidden;border:1px solid var(--line);border-radius:999px;background:#0A0A0F}
-.progress-fill{width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--violet),var(--gold));box-shadow:0 0 14px rgba(214,181,109,.28);transition:width .35s ease}
-.farm-meta{display:flex;justify-content:space-between;gap:8px;color:var(--gold);font:10px var(--mono)}
-.hardware-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.hw-item{padding:10px;border:1px solid var(--line);border-radius:8px;background:rgba(9,9,13,.4)}
-.hw-item .metric-label{display:block}.hw-item strong{display:block;margin-top:6px;color:var(--gold);font:11px var(--mono);overflow-wrap:anywhere}
-.hw-note{margin-top:10px;color:var(--violet);font:9px var(--mono);line-height:1.5}
-.list-chips{display:flex;flex-wrap:wrap;gap:7px}.goal-list{display:grid;gap:8px}
-.goal{padding:9px 10px;border-left:2px solid var(--gold);background:rgba(214,181,109,.045);color:#D9D3DF;font-size:11px;line-height:1.45}
-.footer{display:flex;justify-content:space-between;gap:12px;padding:18px 2px 4px;color:var(--muted);font:9px var(--mono)}
-@media(max-width:950px){.span8,.span7,.span6,.span5,.span4{grid-column:span 12}.agent-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
-@media(max-width:620px){.shell{padding:15px}.topbar,.hero{align-items:flex-start;flex-direction:column}.hero-note{text-align:left}.router{grid-template-columns:1fr}.route-card:not(:last-child):after{content:"v";right:12px;top:auto;bottom:-13px}.agent-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sandbox-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.workflow-list{grid-template-columns:1fr}.quant-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.gate-checks{grid-template-columns:repeat(2,1fr)}.hardware-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.footer{flex-direction:column}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>KYLA — Local Command Deck</title>
+  <style>
+    :root {
+      --bg: #0b0d12;
+      --surface: #12151c;
+      --surface-raised: #171b24;
+      --line: #282e3a;
+      --line-soft: rgba(255,255,255,.07);
+      --text: #f2f1ed;
+      --muted: #9199a8;
+      --dim: #646d7b;
+      --gold: #e5bf78;
+      --violet: #b49af2;
+      --green: #8bd4a4;
+      --red: #e88988;
+      --mono: Menlo, Monaco, "Courier New", monospace;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { min-height: 100%; background: var(--bg); }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(ellipse at 16% 0%, rgba(157,116,214,.13), transparent 34rem),
+                  radial-gradient(ellipse at 100% 18%, rgba(229,191,120,.08), transparent 31rem), var(--bg);
+      color: var(--text);
+      font: 14px/1.45 var(--sans);
+    }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    .shell { max-width: 1480px; margin: 0 auto; padding: 26px 30px 34px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 13px; }
+    .sigil {
+      display: flex; width: 42px; height: 42px; align-items: center; justify-content: center;
+      border: 1px solid rgba(229,191,120,.66); border-radius: 50%; color: var(--gold);
+      font: 700 18px var(--mono); box-shadow: 0 0 20px rgba(229,191,120,.1), inset 0 0 12px rgba(229,191,120,.06);
+    }
+    .brand h1 { margin: 0; font-size: 15px; letter-spacing: .24em; }
+    .brand p { margin: 3px 0 0; color: var(--muted); font: 9px var(--mono); letter-spacing: .14em; }
+    .header-meta { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 9px; }
+    .chip, .status-line, .kicker, .workflow-badge, .roster-state, .terminal-label { font-family: var(--mono); text-transform: uppercase; letter-spacing: .08em; }
+    .chip { padding: 7px 10px; border: 1px solid var(--line); border-radius: 4px; color: var(--muted); font-size: 9px; }
+    .chip strong { color: var(--gold); font-weight: 500; }
+    .status-line { display: flex; align-items: center; gap: 9px; margin: 17px 0 19px; color: #c8d0cb; font-size: 10px; letter-spacing: .11em; }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 11px rgba(139,212,164,.55); flex: 0 0 auto; }
+    .status-line .separator { color: var(--dim); }
+    .intro { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-bottom: 20px; }
+    .eyebrow { margin: 0 0 7px; color: var(--violet); font: 10px var(--mono); letter-spacing: .16em; text-transform: uppercase; }
+    .intro h2 { margin: 0; font-size: 27px; line-height: 1.15; font-weight: 560; letter-spacing: -.035em; }
+    .intro-copy { max-width: 570px; margin: 8px 0 0; color: var(--muted); font-size: 12px; }
+    .intro-note { color: var(--dim); text-align: right; font: 9px/1.6 var(--mono); letter-spacing: .07em; }
+    .workspace { display: flex; align-items: flex-start; gap: 17px; }
+    .main-column { flex: 1 1 660px; min-width: 0; }
+    .side-column { flex: 0 1 370px; min-width: 300px; }
+    .panel { margin-bottom: 17px; padding: 17px; border: 1px solid var(--line); border-radius: 8px; background: linear-gradient(145deg, rgba(24,27,36,.97), rgba(16,18,24,.98)); box-shadow: 0 12px 30px rgba(0,0,0,.13); }
+    .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+    .panel-title { display: flex; align-items: center; gap: 9px; margin: 0; font-size: 12px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; }
+    .panel-index { color: var(--gold); font: 10px var(--mono); }
+    .kicker { color: var(--dim); font-size: 8px; text-align: right; }
+    .workflow-grid { display: flex; flex-wrap: wrap; gap: 9px; }
+    .workflow-card { position: relative; flex: 1 1 225px; min-width: 205px; padding: 12px 12px 11px; border: 1px solid var(--line-soft); border-radius: 6px; background: rgba(7,9,13,.42); }
+    .workflow-card:before { position: absolute; top: 0; left: 12px; width: 22px; height: 1px; background: rgba(229,191,120,.55); content: ""; }
+    .workflow-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+    .workflow-name { margin: 0; color: #e8e6e0; font-size: 11px; font-weight: 600; line-height: 1.4; }
+    .workflow-num { display: block; margin-bottom: 3px; color: var(--dim); font: 8px var(--mono); letter-spacing: .1em; }
+    .workflow-badge { display: inline-block; flex: 0 0 auto; padding: 4px 6px; border: 1px solid; border-radius: 3px; font-size: 8px; line-height: 1; }
+    .workflow-badge.active { border-color: rgba(139,212,164,.33); background: rgba(139,212,164,.07); color: var(--green); }
+    .workflow-badge.stub { border-color: rgba(145,153,168,.24); background: rgba(145,153,168,.05); color: #9ba2ad; }
+    .workflow-foot { margin-top: 9px; color: var(--dim); font: 8px var(--mono); letter-spacing: .045em; }
+    .micro-note { margin: 13px 0 0; color: var(--dim); font-size: 10px; }
+    .roster-grid { display: flex; flex-wrap: wrap; gap: 7px; }
+    .roster-item { display: flex; flex: 1 1 135px; min-width: 125px; align-items: center; justify-content: space-between; gap: 7px; padding: 8px 9px; border: 1px solid var(--line-soft); border-radius: 4px; background: rgba(7,9,13,.36); }
+    .roster-name { color: #d5d7dc; font-size: 10px; }
+    .roster-state { white-space: nowrap; color: var(--dim); font-size: 7px; }
+    .roster-state:before { display: inline-block; width: 5px; height: 5px; margin: 0 5px 1px 0; border-radius: 50%; background: #596170; content: ""; }
+    .roster-state.online { color: var(--green); }
+    .roster-state.online:before { background: var(--green); box-shadow: 0 0 7px rgba(139,212,164,.45); }
+    .browser-window { overflow: hidden; border: 1px solid #303644; border-radius: 5px; background: #0a0c11; }
+    .browser-bar { display: flex; align-items: center; gap: 5px; height: 27px; padding: 0 9px; border-bottom: 1px solid #252a34; background: #141821; }
+    .browser-control { width: 6px; height: 6px; border-radius: 50%; background: #424956; }
+    .browser-address { overflow: hidden; flex: 1; margin-left: 5px; padding: 3px 8px; border: 1px solid #252a34; border-radius: 3px; color: #737c8a; font: 8px var(--mono); white-space: nowrap; text-overflow: ellipsis; }
+    .browser-canvas { display: flex; min-height: 146px; align-items: center; justify-content: center; padding: 18px; text-align: center; background-image: linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px); background-size: 18px 18px; }
+    .browser-mark { display: inline-flex; width: 32px; height: 32px; align-items: center; justify-content: center; margin-bottom: 10px; border: 1px solid rgba(180,154,242,.34); border-radius: 50%; color: var(--violet); font: 12px var(--mono); }
+    .browser-canvas h4 { margin: 0; color: #d7d2e2; font-size: 11px; font-weight: 500; }
+    .browser-canvas p { max-width: 225px; margin: 5px auto 0; color: var(--dim); font-size: 9px; line-height: 1.5; }
+    .browser-caption { display: flex; justify-content: space-between; gap: 10px; padding-top: 9px; color: var(--dim); font: 8px var(--mono); letter-spacing: .04em; }
+    .terminal-panel { padding: 0; overflow: hidden; }
+    .terminal-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 16px; border-bottom: 1px solid var(--line); background: rgba(6,8,12,.35); }
+    .terminal-title { display: flex; align-items: center; gap: 9px; margin: 0; font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; }
+    .terminal-label { color: var(--dim); font-size: 8px; }
+    .terminal-feed { display: flex; flex-direction: column; gap: 5px; min-height: 74px; max-height: 135px; overflow-y: auto; padding: 12px 16px; color: #c1c8c5; font: 10px/1.5 var(--mono); }
+    .feed-entry { display: flex; gap: 10px; overflow-wrap: anywhere; }
+    .feed-time { flex: 0 0 auto; color: #667181; }
+    .feed-system { color: var(--green); }
+    .feed-command { color: var(--gold); }
+    .command-form { display: flex; align-items: center; gap: 9px; padding: 10px 12px; border-top: 1px solid var(--line); background: rgba(5,7,10,.58); }
+    .prompt { flex: 0 0 auto; color: var(--violet); font: 10px var(--mono); white-space: nowrap; }
+    .command-input { width: 100%; min-width: 0; padding: 8px 3px; border: 0; outline: 0; background: transparent; color: var(--text); font: 11px var(--mono); }
+    .command-input::placeholder { color: #626b79; }
+    .submit-button { flex: 0 0 auto; padding: 7px 12px; border: 1px solid rgba(229,191,120,.38); border-radius: 4px; background: rgba(229,191,120,.08); color: var(--gold); font: 9px var(--mono); letter-spacing: .06em; }
+    .submit-button:hover, .submit-button:focus { border-color: var(--gold); background: rgba(229,191,120,.14); }
+    .terminal-note { margin: 0; padding: 0 16px 12px; color: var(--dim); font-size: 9px; }
+    .footer { display: flex; justify-content: space-between; gap: 14px; padding: 13px 2px 0; color: var(--dim); font: 8px var(--mono); letter-spacing: .07em; text-transform: uppercase; }
+    @media (max-width: 960px) {
+      .workspace { flex-direction: column; }
+      .main-column, .side-column { width: 100%; flex: 1 1 auto; }
+      .side-column { display: flex; align-items: stretch; gap: 17px; }
+      .side-column .panel { flex: 1 1 50%; }
+    }
+    @media (max-width: 640px) {
+      .shell { padding: 17px 14px 24px; }
+      .topbar { align-items: flex-start; }
+      .header-meta { max-width: 150px; }
+      .chip { font-size: 8px; }
+      .intro { align-items: flex-start; flex-direction: column; }
+      .intro-note { text-align: left; }
+      .intro h2 { font-size: 23px; }
+      .side-column { flex-direction: column; gap: 0; }
+      .workflow-card { min-width: 100%; }
+      .roster-item { flex-basis: 145px; }
+      .panel { padding: 14px; }
+      .terminal-head { padding-left: 13px; padding-right: 13px; }
+      .footer { flex-direction: column; }
+    }
+  </style>
 </head>
 <body>
-<div class="shell">
-<header class="topbar">
-  <div class="brand"><div class="sigil" aria-hidden="true">K</div><div><h1>KYLA</h1><p>LOCAL COMMAND DECK / PRIVATE BY DESIGN</p></div></div>
-  <div class="top-right"><span id="connection" class="pill" role="status">LOCAL LINK</span><button id="refresh" class="refresh" type="button">REFRESH</button></div>
-</header>
-<section class="hero"><div><div class="eyebrow">The pattern is showing</div><h2>Good evening, Mel.</h2><p>Your command center is here. Read the signal, protect the downside, and make the next move count.</p></div><div class="hero-note">LOCAL HUD / SIMULATED AGENT ACTIVITY</div></section>
-<main class="grid">
-<section class="panel span12"><div class="panel-head"><h3>JEV-style request router</h3><span class="kicker">ROUTE BY COMPLEXITY</span></div><div id="router" class="router"></div><div id="frameworks" class="frameworks"></div></section>
-<section class="panel span8"><div class="panel-head"><h3>Agent roster</h3><span class="kicker">15 CREW + 7 SANDBOX</span></div><div id="agents" class="agent-grid"></div></section>
-<section class="panel span4"><div class="panel-head"><h3>R13 release gate</h3><span class="kicker">APPROVAL PATH</span></div><div class="subtle">Nothing proceeds to SOPHIA or Mel approval until every review passes.</div><div class="router-flow" aria-label="Release flow"><span class="stage">WORK COMPLETE</span><span class="flow-arrow">-&gt;</span><span class="stage gate">R13 REVIEW</span><span class="flow-arrow">-&gt;</span><span class="stage locked">SOPHIA LOCKED</span><span class="flow-arrow">-&gt;</span><span class="stage locked">MEL APPROVAL</span></div><div id="gateChecks" class="gate-checks"></div><div id="gateStatus" class="gate-status">LOCKED</div></section>
-<section class="panel span12"><div class="panel-head"><h3>Docker sandbox agents</h3><span class="kicker">ISOLATED TOOLS / CPU-THROTTLED</span></div><div id="sandbox" class="sandbox-grid"></div></section>
-<section class="panel span7"><div class="panel-head"><h3>Quant mind</h3><span class="kicker">TARGETS, NOT CLAIMED RESULTS</span></div><div id="quantMetrics" class="quant-grid"></div><div class="subtle" style="margin-top:12px">Sequence setups</div><div id="sequences" class="sequence-row"></div><div class="subtle" style="margin-top:12px">Multi-timeframe watch</div><div id="timeframes" class="tf-row"></div><div id="mt5" class="mt5 subtle"></div><div id="signal" class="ticker" role="status"></div></section>
-<section class="panel span5"><div class="panel-head"><h3>Loophole board</h3><span class="kicker">WEEKLY SWEEP / docs/LOOPHOLES.md</span></div><div id="loopholes" class="board"></div></section>
-<section class="panel span6"><div class="panel-head"><h3>Vice / virtue workflow map</h3><span class="kicker">7 DAILY DISCIPLINE MIRRORS</span></div><div id="workflows" class="workflow-list"></div></section>
-<section class="panel span6"><div class="panel-head"><h3>Moji Moji video farm</h3><span class="kicker">3 REFS -&gt; TIERED -&gt; 20 VIDEOS</span></div><div id="farmName" class="subtle">Farm queue loading</div><div class="progress-track" aria-label="Farm queue progress"><div id="farmProgress" class="progress-fill"></div></div><div class="farm-meta"><span id="farmCount">0 / 20</span><span id="farmStatus">WAITING</span></div><p id="farmInput" class="subtle"></p></section>
-<section class="panel span5"><div class="panel-head"><h3>Hardware whisper</h3><span class="kicker">LOCAL HOST READOUT</span></div><div id="hardware" class="hardware-grid"></div><div id="hardwareNote" class="hw-note"></div></section>
-<section class="panel span7"><div class="panel-head"><h3>Feeds and publishing arms</h3><span class="kicker">DESIGN REFERENCES / NOT CONNECTED</span></div><div class="subtle">Information feeds</div><div id="sources" class="list-chips" style="margin:8px 0 15px"></div><div class="subtle">Digital product publishing</div><div id="publishing" class="list-chips" style="margin-top:8px"></div></section>
-<section class="panel span12"><div class="panel-head"><h3>Mel's north star</h3><span class="kicker">GOALS, NOT COMPLETED ACHIEVEMENTS</span></div><div id="goals" class="goal-list"></div></section>
-</main>
-<footer class="footer"><span>KYLA / LOCAL-ONLY HUD / OFFLINE ASSETS</span><span id="updated">Waiting for local state...</span></footer>
-</div>
-<script>
-"use strict";
-function make(tag,className,text){var node=document.createElement(tag);if(className)node.className=className;if(text!==undefined&&text!==null)node.textContent=String(text);return node}
-function clear(node){while(node.firstChild)node.removeChild(node.firstChild)}
-function chipList(targetId,values){var target=document.getElementById(targetId);clear(target);(values||[]).forEach(function(value){target.appendChild(make("span","tag",value))})}
-function renderRouter(data){var root=document.getElementById("router");clear(root);(data.router||[]).forEach(function(item,index){var card=make("div","route-card");card.appendChild(make("span","tier",item.name||("TIER "+(index+1))));card.appendChild(make("strong","",item.title||""));card.appendChild(make("span","",item.detail||""));root.appendChild(card)});chipList("frameworks",data.frameworks)}
-function renderAgents(data){var root=document.getElementById("agents");clear(root);(data.agents||[]).forEach(function(agent){var card=make("div","agent-card state-"+(agent.status||"IDLE"));card.appendChild(make("strong","",agent.name||"Agent"));var meta=make("div","agent-meta");meta.appendChild(make("span","",agent.group||"CREW"));meta.appendChild(make("span","status",agent.status||"IDLE"));card.appendChild(meta);root.appendChild(card)})}
-function renderSandbox(data){var root=document.getElementById("sandbox");clear(root);(data.sandbox||[]).forEach(function(agent){var card=make("div","sandbox-card");var top=make("div","sandbox-top");top.appendChild(make("strong","",agent.name||""));top.appendChild(make("span","kicker",agent.status||"IDLE"));card.appendChild(top);card.appendChild(make("div","codename",agent.codename||""));card.appendChild(make("div","role",agent.role||""));root.appendChild(card)})}
-function renderGate(data){var gate=data.gate||{};var root=document.getElementById("gateChecks");clear(root);(gate.checks||[]).forEach(function(item){root.appendChild(make("div","check","LOCKED / "+item))});document.getElementById("gateStatus").textContent=gate.status||"LOCKED - reviews required"}
-function renderQuant(data){var quant=data.quant||{};var metrics=document.getElementById("quantMetrics");clear(metrics);[["STRATEGY LIBRARY TARGET",quant.strategy_target],["POSITIVE BACKTEST GOAL",quant.positive_backtest_goal],["RISK CYCLE",quant.risk_cycle],["SCALP LIMIT",quant.scalp_limit]].forEach(function(pair){var item=make("div","metric");item.appendChild(make("div","metric-label",pair[0]));item.appendChild(make("div","metric-value",pair[1]===undefined?"--":pair[1]));metrics.appendChild(item)});chipList("sequences",quant.sequence_setups);chipList("timeframes",quant.timeframes);document.getElementById("mt5").textContent="MT5 INDICATOR SCOPE: "+(quant.mt5_scope||"Not configured");document.getElementById("signal").textContent="SIGNAL TICKER / "+(data.signal||"No simulated signal")+" / "+(quant.notice||"Demo data only.")}
-function renderLoopholes(data){var root=document.getElementById("loopholes");clear(root);(data.loopholes||[]).forEach(function(item){var row=make("div","issue");row.appendChild(make("span","priority "+(item.priority||"P2"),item.priority||"P2"));row.appendChild(make("span","",item.text||""));root.appendChild(row)})}
-function renderWorkflows(data){var root=document.getElementById("workflows");clear(root);(data.workflows||[]).forEach(function(item){var card=make("div","workflow"+(item.active?" active":""));var title=make("div","workflow-title");title.appendChild(make("strong","",item.name||"Workflow"));title.appendChild(make("span","",item.active?"ACTIVE":"STANDBY"));card.appendChild(title);card.appendChild(make("p","pair",(item.vice||"")+" / "+(item.virtue||"")));card.appendChild(make("p","",(item.vice_job||"")+" "+(item.virtue_job||"")));root.appendChild(card)})}
-function renderFarm(data){var farm=data.farm||{};var progress=Math.max(0,Math.min(100,Number(farm.progress)||0));document.getElementById("farmName").textContent=farm.name||"Video farm";document.getElementById("farmProgress").style.width=progress+"%";document.getElementById("farmCount").textContent=(farm.done===undefined?0:farm.done)+" / "+(farm.total===undefined?20:farm.total)+" VIDEOS";document.getElementById("farmStatus").textContent=farm.status||"UNKNOWN";document.getElementById("farmInput").textContent=farm.input||""}
-function renderHardware(data){var hardware=data.hardware||{};var root=document.getElementById("hardware");clear(root);[["TARGET",hardware.target],["DETECTED OS",hardware.detected_os],["CPU",hardware.cpu],["LOGICAL CORES",hardware.logical_cores],["LOAD AVERAGE / 1M",hardware.load_1m],["RAM GB",hardware.ram_gb]].forEach(function(pair){var item=make("div","hw-item");item.appendChild(make("span","metric-label",pair[0]));item.appendChild(make("strong","",pair[1]===null||pair[1]===undefined?"n/a":pair[1]));root.appendChild(item)});document.getElementById("hardwareNote").textContent=hardware.agent_note||"Agent workload is CPU-throttled."}
-function renderGoals(data){var root=document.getElementById("goals");clear(root);(data.life_goals||[]).forEach(function(goal){root.appendChild(make("div","goal",goal))})}
-function setConnection(online){var badge=document.getElementById("connection");badge.textContent=online?"LOCAL LINK / LIVE":"LOCAL LINK / RETRYING";badge.className=online?"pill":"pill offline"}
-function update(){fetch("/api/state",{cache:"no-store",credentials:"same-origin"}).then(function(response){if(!response.ok)throw new Error("Local state unavailable");return response.json()}).then(function(data){renderRouter(data);renderAgents(data);renderSandbox(data);renderGate(data);renderQuant(data);renderLoopholes(data);renderWorkflows(data);renderFarm(data);renderHardware(data);chipList("sources",data.sources);chipList("publishing",data.publishing);renderGoals(data);setConnection(true);document.getElementById("updated").textContent="LOCAL STATE UPDATED / "+new Date().toLocaleTimeString()}).catch(function(){setConnection(false);document.getElementById("updated").textContent="Waiting for local server state..."})}
-document.getElementById("refresh").addEventListener("click",update);update();window.setInterval(update,4000);
-</script>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="sigil" aria-hidden="true">K</div>
+        <div><h1>KYLA</h1><p>LOCAL COMMAND DECK / HUD v1</p></div>
+      </div>
+      <div class="header-meta">
+        <span class="chip"><strong>LOCAL</strong> / PRIVATE</span>
+        <span class="chip">BUILD <strong>01</strong></span>
+      </div>
+    </header>
+
+    <div class="status-line" role="status">
+      <span class="status-dot" aria-hidden="true"></span>
+      <span>KYLA STATUS</span><span class="separator">/</span>
+      <span>LOCAL SYSTEM READY</span><span class="separator">·</span>
+      <span>OFFLINE-FRIENDLY</span>
+    </div>
+
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Operator overview &nbsp;·&nbsp; 01 / 04</p>
+        <h2 id="page-title">The command deck.</h2>
+        <p class="intro-copy">A quiet, local-first view of KYLA's workflow surfaces and crew. This v1 dashboard is a static interface; it does not connect to agents or run commands.</p>
+      </div>
+      <div class="intro-note">NO REMOTE ASSETS<br>NO BUILD STEP<br>STATUS INDICATORS ARE STATIC</div>
+    </section>
+
+    <div class="workspace">
+      <main class="main-column">
+        <section class="panel" aria-labelledby="workflows-title">
+          <div class="panel-head">
+            <h3 class="panel-title" id="workflows-title"><span class="panel-index">01</span> Workflow deck</h3>
+            <span class="kicker">14 ROUTES / V1 SURFACES</span>
+          </div>
+          <div class="workflow-grid">
+            <article class="workflow-card"><div class="workflow-top"><h4 class="workflow-name"><span class="workflow-num">ROUTE 01</span>Pride-Icarus Mirror</h4><span class="workflow-badge active">ACTIVE</span></div><div class="workflow-foot">LOCAL WORKFLOW SURFACE</div></article>
+            <article class="workflow-card"><div class="workflow-top"><h4 class="workflow-name"><span class="workflow-num">ROUTE 02</span>Greed-Midas Ledger</h4><span class="workflow-badge active">ACTIVE</span></div><div class="workflow-foot">LOCAL WORKFLOW SURFACE</div></article>
+            <article class="workflow-card"><div class="workflow-top"><h4 class="workflow-name"><span class="workflow-num">ROUTE 03</span>Lust-Siren's Hook</h4><span class="workflow-badge stub">STUB</span></div><div class="workflow-foot">LOCAL WORKFLOW SURFACE</div></article>
+            <article class="workflow-card"><div class="workflow-top"><h4 class="workflow-name"><span class="workflow-num">ROUTE 04</span>Envy-Rival's Grimoire</h4><span class="workflow-badge stub">STUB</span></div><div class="workflow-foot">LOCAL WORKFLOW SURFACE</div></article>
+            <article class="workflow-card"><div class="workflow-top"><h4 class="workflow-name"><span class="workflow-num">ROUTE 05</span>Gluttony-Data Maw</h4><span class="workflow-badge stub">STUB</span></div><div class="workflow-foot">LOCAL WORKFLOW SURFACE</div></article>
+            <article class="workflow-card"><div class="workflow-top"><h4 class="workflow-name"><span class="workflow-num">ROUTE 06</span>Wrath-Red Bell</h4><span class="workflow-badge active">ACTIVE</span></div><div class="workflow-foot">LOCAL WORKFLOW SURFACE</div></article>
+            <article class="workflow-card"><div class="workflow-top"><h4 class="workflow-name"><span class="workflow-num">ROUTE 07</span>Sloth-Somnus</h4><span class="workflow-badge stub">STUB</span></div><div class="workflow-foot">LOCAL WORKFLOW SURFACE</div></article>
+            <article class="workflow-card"><div class="workflow-top"><h4 class="workflow-name"><span class="workflow-num">ROUTE 08</span>Humility-The Auditor</h4><span class="workflow-badge active">ACTIVE</span></div><div class="workflow-foot">LOCAL WORKFLOW SURFACE</div></article>
+            <article class="workflow-card"><div class="workflow-top"><h4 class="workflow-name"><span class="workflow-num">ROUTE 09</span>Charity-Open Hand</h4><span class="workflow-badge stub">STUB</span></div><div class="workflow-foot">LOCAL WORKFLOW SURFACE</div></article>
+            <article class="workflow-card"><div class="workflow-top"><h4 class="workflow-name"><span class="workflow-num">ROUTE 10</span>Chastity-The Veil</h4><span class="workflow-badge stub">STUB</span></div><div class="workflow-foot">LOCAL WORKFLOW SURFACE</div></article>
+            <article class="workflow-card"><div class="workflow-top"><h4 class="workflow-name"><span class="workflow-num">ROUTE 11</span>Kindness-The Lantern</h4><span class="workflow-badge stub">STUB</span></div><div class="workflow-foot">LOCAL WORKFLOW SURFACE</div></article>
+            <article class="workflow-card"><div class="workflow-top"><h4 class="workflow-name"><span class="workflow-num">ROUTE 12</span>Temperance-The Scales</h4><span class="workflow-badge stub">STUB</span></div><div class="workflow-foot">LOCAL WORKFLOW SURFACE</div></article>
+            <article class="workflow-card"><div class="workflow-top"><h4 class="workflow-name"><span class="workflow-num">ROUTE 13</span>Patience-The Hourglass</h4><span class="workflow-badge stub">STUB</span></div><div class="workflow-foot">LOCAL WORKFLOW SURFACE</div></article>
+            <article class="workflow-card"><div class="workflow-top"><h4 class="workflow-name"><span class="workflow-num">ROUTE 14</span>Diligence-The Anvil</h4><span class="workflow-badge stub">STUB</span></div><div class="workflow-foot">LOCAL WORKFLOW SURFACE</div></article>
+          </div>
+          <p class="micro-note">“Active” denotes a surfaced dashboard card, not a running workflow. All route states are static placeholders.</p>
+        </section>
+      </main>
+
+      <aside class="side-column" aria-label="Crew and browser view">
+        <section class="panel" aria-labelledby="roster-title">
+          <div class="panel-head">
+            <h3 class="panel-title" id="roster-title"><span class="panel-index">02</span> Crew roster</h3>
+            <span class="kicker">STATIC INDICATORS</span>
+          </div>
+          <div class="roster-grid">
+            <div class="roster-item"><span class="roster-name">Intake</span><span class="roster-state online">ONLINE</span></div>
+            <div class="roster-item"><span class="roster-name">Report</span><span class="roster-state online">ONLINE</span></div>
+            <div class="roster-item"><span class="roster-name">Ops</span><span class="roster-state online">ONLINE</span></div>
+            <div class="roster-item"><span class="roster-name">Proposal</span><span class="roster-state">OFFLINE</span></div>
+            <div class="roster-item"><span class="roster-name">Automation Engineer</span><span class="roster-state online">ONLINE</span></div>
+            <div class="roster-item"><span class="roster-name">RAG Architect</span><span class="roster-state">OFFLINE</span></div>
+            <div class="roster-item"><span class="roster-name">RAG Engineer</span><span class="roster-state online">ONLINE</span></div>
+            <div class="roster-item"><span class="roster-name">Web Dev</span><span class="roster-state online">ONLINE</span></div>
+            <div class="roster-item"><span class="roster-name">QA</span><span class="roster-state">OFFLINE</span></div>
+            <div class="roster-item"><span class="roster-name">Brief</span><span class="roster-state online">ONLINE</span></div>
+            <div class="roster-item"><span class="roster-name">Writer</span><span class="roster-state">OFFLINE</span></div>
+            <div class="roster-item"><span class="roster-name">Editor</span><span class="roster-state online">ONLINE</span></div>
+            <div class="roster-item"><span class="roster-name">Signal</span><span class="roster-state">OFFLINE</span></div>
+            <div class="roster-item"><span class="roster-name">Risk</span><span class="roster-state online">ONLINE</span></div>
+            <div class="roster-item"><span class="roster-name">Support</span><span class="roster-state">OFFLINE</span></div>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="browser-title">
+          <div class="panel-head">
+            <h3 class="panel-title" id="browser-title"><span class="panel-index">03</span> Browser view</h3>
+            <span class="kicker">NO STREAM</span>
+          </div>
+          <div class="browser-window">
+            <div class="browser-bar" aria-hidden="true"><span class="browser-control"></span><span class="browser-control"></span><span class="browser-control"></span><span class="browser-address">agent browser feed</span></div>
+            <div class="browser-canvas">
+              <div><span class="browser-mark" aria-hidden="true">◌</span><h4>Awaiting agent browser feed</h4><p>This view is a placeholder. No browser session is connected or recorded.</p></div>
+            </div>
+          </div>
+          <div class="browser-caption"><span>LOCAL PREVIEW</span><span>FEED NOT CONNECTED</span></div>
+        </section>
+      </aside>
+    </div>
+
+    <section class="panel terminal-panel" aria-labelledby="terminal-title">
+      <div class="terminal-head">
+        <h3 class="terminal-title" id="terminal-title"><span class="panel-index">04</span> Local activity</h3>
+        <span class="terminal-label">SESSION FEED / IN-MEMORY ONLY</span>
+      </div>
+      <div class="terminal-feed" id="activity-feed" aria-live="polite" aria-relevant="additions">
+        <div class="feed-entry"><span class="feed-time">--:--:--</span><span class="feed-system">HUD ready. Local-only preview; no agent connection.</span></div>
+      </div>
+      <form class="command-form" id="command-form">
+        <label class="prompt" for="command-input">kyla@local:~$</label>
+        <input class="command-input" id="command-input" name="command" type="text" autocomplete="off" placeholder="Enter text to add to the activity feed…" aria-label="Local command placeholder">
+        <button class="submit-button" type="submit">APPEND</button>
+      </form>
+      <p class="terminal-note">Placeholder only: submitted text is appended locally to this feed. Commands are not executed.</p>
+    </section>
+
+    <footer class="footer"><span>KYLA / LOCAL-ONLY HUD / OFFLINE ASSETS</span><span>STATIC V1 · NO NETWORK REQUESTS</span></footer>
+  </div>
+  <script>
+    (function () {
+      "use strict";
+      var form = document.getElementById("command-form");
+      var input = document.getElementById("command-input");
+      var feed = document.getElementById("activity-feed");
+
+      function currentTime() {
+        var date = new Date();
+        return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+      }
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        var value = input.value.replace(/^\s+|\s+$/g, "");
+        if (!value) {
+          input.focus();
+          return;
+        }
+        var row = document.createElement("div");
+        row.className = "feed-entry";
+        var time = document.createElement("span");
+        time.className = "feed-time";
+        time.textContent = currentTime();
+        var text = document.createElement("span");
+        text.className = "feed-command";
+        text.textContent = "> " + value;
+        row.appendChild(time);
+        row.appendChild(text);
+        feed.appendChild(row);
+        feed.scrollTop = feed.scrollHeight;
+        input.value = "";
+        input.focus();
+      });
+    }());
+  </script>
 </body>
 </html>
